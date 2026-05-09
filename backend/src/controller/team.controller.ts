@@ -13,7 +13,7 @@ export const joinTeam = async (
   let client;
   try {
     client = await clientPool.connect();
-    const { id } = req.params;
+    const { teamId } = req.params;
     const userid = req.userId;
     await client.query("BEGIN");
     const teamExist = await client.query(

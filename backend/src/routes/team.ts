@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/", createTeam);
 router.get("/getteams", getTeams);
-router.post("/:id/join", joinTeam);
+router.post("/:teamId/join", joinTeam);
 
 router.get("/:teamId/members", requireRole(["admin", "member"]), getMembers);
 router.patch("/:teamId/settings", requireRole(["admin"]), updateSettings);
