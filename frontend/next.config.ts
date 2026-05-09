@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://dailyping-ggcr.onrender.com/:path*", // Proxy to Backend
+        destination: "https://dailyping-ggcr.onrender.com/:path*",
       },
     ];
   },
