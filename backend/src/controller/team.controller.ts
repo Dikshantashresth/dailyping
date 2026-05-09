@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import slugify from "slugify";
 import clientPool from "../utils/supabase/db";
-import AppError from "../utils/AppError.js";
+import AppError from "../utils/AppError";
 import { createTeamSchema } from "../schemas/team.schema";
 import { nanoid } from "nanoid";
 
@@ -13,21 +13,22 @@ export const joinTeam = async (
   let client;
   try {
     client = await clientPool.connect();
-    const { teamId } = req.params;
+    const { id } = req.params;
     const userid = req.userId;
     await client.query("BEGIN");
     const teamExist = await client.query(
       "SELECT * FROM teams WHERE invite_id = $1",
-      [teamId],
+      [id],
     );
     if (teamExist.rows.length == 0)
       throw new AppError("Team Doesnt Exist", 404);
     const teamData = teamExist.rows[0];
 
     const jointeam = await client.query(
-      "INSERT INTO team_members(team_id,user_id,role,current_streak,longest_streaK)VALUES($1,$2,$3,$4,$5) ON CONFLICT(team_id,user_id) DO NOTHING RETURNING * ",
+      "INSERT INTO team_members(team_id,user_id,role,current_streak,longest_streaK) VALUES($1,$2,$3,$4,$5) ON CONFLICT(team_id,user_id) DO NOTHING RETURNING * ",
       [teamData.id, userid, "member", 0, 0],
     );
+    console.log(jointeam)
     if (jointeam.rows.length == 0) throw new AppError("Failed to join", 500);
 
     await client.query("COMMIT");

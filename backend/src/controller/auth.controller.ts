@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import supabase from "../utils/supabase/client.js";
+import supabase from "../utils/supabase/client";
 import AppError from "../utils/AppError";
 import clientPool from "../utils/supabase/db";
 import { setSession } from "../services/session";

@@ -22,11 +22,8 @@ export const createTeamSchema = z
     close_time: z
       .string()
       .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:MM)"),
-
-   
     reminder_time: z
-      .number("")
-      .int("Reminder time must be a whole number")
+      .string()
       .min(0, "Reminder time must be positive")
       .max(1440, "Reminder time cannot exceed 24 hours"),
   })

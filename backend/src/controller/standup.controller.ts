@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import clientPool from "../utils/supabase/db";
-import AppError from "../utils/AppError.js";
+import AppError from "../utils/AppError";
 import { detectAndFlagBlocker } from "../services/blockerDetection";
-import { success } from "zod";
+
 
 export const submitStandup = async (
   req: Request,
