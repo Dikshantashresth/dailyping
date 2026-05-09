@@ -33,6 +33,7 @@ export default function MembersPage() {
       try {
         const res = await api.get(`/teams/${teamId}/members`);
         setMembers(res.data.members || []);
+        console.log(res.data, members);
       } catch {
         console.error("Failed to fetch members");
       } finally {
@@ -49,13 +50,22 @@ export default function MembersPage() {
     }
   };
 
+  const handleKickOut = async (memberid: string) => {
+    if (!isAdmin) return toast.error("Cannot Remove");
+    const res = await api.delete(`/teams/${teamId}/remove/${memberid}`);
+    if (res.data.success) {
+      setMembers((prev) => prev.filter((i) => i.user_id != memberid));
+      return toast.success("Removed a member");
+    }
+  };
   return (
     <div className="p-8 max-w mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Members</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {members.length} member{members.length !== 1 ? "s" : ""} in this team
+            {members.length} member{members.length !== 1 ? "s" : ""} in this
+            team
           </p>
         </div>
         {isAdmin && (
@@ -95,8 +105,12 @@ export default function MembersPage() {
                         {member.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                       <div>
-                        <p className="font-medium text-sm">{member.name || "Unknown"}</p>
-                        <p className="text-xs text-muted-foreground">{member.email}</p>
+                        <p className="font-medium text-sm">
+                          {member.name || "Unknown"}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {member.email}
+                        </p>
                       </div>
                     </div>
                   </td>
@@ -106,7 +120,9 @@ export default function MembersPage() {
                         <ShieldAlert className="w-3 h-3" /> Admin
                       </span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">Member</span>
+                      <span className="text-xs text-muted-foreground">
+                        Member
+                      </span>
                     )}
                   </td>
                   <td className="px-5 py-3.5">
@@ -121,7 +137,7 @@ export default function MembersPage() {
                     <td className="px-5 py-3.5">
                       {member.role !== "admin" && (
                         <button
-                          onClick={() => toast.info("Remove member feature coming soon")}
+                          onClick={() => handleKickOut(member.user_id)}
                           className="p-1.5 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded transition-colors"
                           title="Remove member"
                         >

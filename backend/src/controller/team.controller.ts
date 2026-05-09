@@ -28,7 +28,7 @@ export const joinTeam = async (
       "INSERT INTO team_members(team_id,user_id,role,current_streak,longest_streaK) VALUES($1,$2,$3,$4,$5) ON CONFLICT(team_id,user_id) DO NOTHING RETURNING * ",
       [teamData.id, userid, "member", 0, 0],
     );
-    console.log(jointeam)
+
     if (jointeam.rows.length == 0) throw new AppError("Failed to join", 500);
 
     await client.query("COMMIT");
@@ -41,7 +41,6 @@ export const joinTeam = async (
   }
 };
 
-
 export const getMembers = async (
   req: Request,
   res: Response,
@@ -52,7 +51,7 @@ export const getMembers = async (
     client = await clientPool.connect();
     const { teamId } = req.params;
     const members = await client.query(
-      `SELECT tm.role, tm.current_streak, tm.longest_streak,p.avatar_url,p.name, p.email 
+      `SELECT tm.role, tm.current_streak,tm.user_id, tm.longest_streak,p.avatar_url,p.name, p.email 
        FROM team_members tm 
        JOIN profiles p ON tm.user_id = p.id 
        WHERE tm.team_id = $1`,
@@ -61,13 +60,11 @@ export const getMembers = async (
 
     res.status(200).json({ members: members.rows, success: true });
   } catch (error) {
-
     next(error);
   } finally {
     if (client) client.release();
   }
 };
-
 
 export const getTeams = async (
   req: Request,
@@ -113,6 +110,45 @@ export const getTeams = async (
   }
 };
 
+export const removeMember = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  let client;
+  try {
+    client = await clientPool.connect();
+
+    const { teamId, userid } = req.params;
+    const role = req.role;
+    if (role != "admin")
+      throw new AppError("Sorry cannot perform the request", 401);
+    console.log(userid,teamId);
+    await client.query("BEGIN");
+    const ismember = await client.query(
+      "SELECT * FROM team_members WHERE team_id=$1 AND user_id=$2",
+      [teamId, userid],
+    );
+    console.log(ismember.rows);
+    if (ismember.rows.length == 0)
+      throw new AppError("Opps! error occured", 401);
+
+    await client.query(
+      "DELETE FROM team_members WHERE user_id=$1 AND team_id=$2",
+      [userid, teamId],
+    );
+
+    await client.query("COMMIT");
+    return res
+      .status(200)
+      .json({ success: true, message: "Removed successfully" });
+  } catch (error) {
+    if (client) await client.query("ROLLBACK");
+    next(error);
+  } finally {
+    if (client) client.release();
+  }
+};
 
 export const leaveteam = async (
   req: Request,
@@ -129,25 +165,30 @@ export const leaveteam = async (
       "SELECT * FROM team_members WHERE team_id=$1 AND user_id=$2",
       [teamid, userid],
     );
+    console.log(ismember.rows);
     if (ismember.rows.length == 0)
       throw new AppError("Opps! error occured", 401);
-    
+
     await client.query(
       "DELETE FROM team_members WHERE user_id=$1 AND team_id=$2",
       [userid, teamid],
     );
-    await client.query("DELETE FROM standups WHERE user_id=$1 AND team_id=$2",[userid,teamid]);
+    await client.query("DELETE FROM standups WHERE user_id=$1 AND team_id=$2", [
+      userid,
+      teamid,
+    ]);
 
     await client.query("COMMIT");
-    return res.status(200).json({ success: true, message: "Left team successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Left team successfully" });
   } catch (error) {
-    if (client) await client.query('ROLLBACK');
+    if (client) await client.query("ROLLBACK");
     next(error);
   } finally {
     if (client) client.release();
   }
 };
-
 
 export const updateSettings = async (
   req: Request,
@@ -159,20 +200,21 @@ export const updateSettings = async (
     client = await clientPool.connect();
     const { teamId } = req.params;
     const { name, timeZone, open_time, close_time } = req.body;
-    
+
     const updated = await client.query(
       "UPDATE teams SET name = $1, timezone = $2, submission_open = $3, submission_close = $4 WHERE id = $5 RETURNING *",
-      [name, timeZone, open_time, close_time, teamId]
+      [name, timeZone, open_time, close_time, teamId],
     );
-console.log(updated.rows)
-    return res.status(200).json({ success: true, message: "Settings updated successfully" });
+    console.log(updated.rows);
+    return res
+      .status(200)
+      .json({ success: true, message: "Settings updated successfully" });
   } catch (error) {
     next(error);
   } finally {
     if (client) client.release();
   }
 };
-
 
 export const createTeam = async (
   req: Request,
@@ -245,4 +287,3 @@ export const createTeam = async (
     if (client) client.release();
   }
 };
-

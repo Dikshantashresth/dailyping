@@ -5,6 +5,7 @@ import {
   getTeams,
   joinTeam,
   leaveteam,
+  removeMember,
   updateSettings,
 } from "../controller/team.controller";
 import { requireRole } from "../middleware/RoleMiddleware";
@@ -16,6 +17,7 @@ router.get("/getteams", getTeams);
 router.post("/:id/join", joinTeam);
 
 router.get("/:teamId/members", requireRole(["admin", "member"]), getMembers);
+router.delete("/:teamId/remove/:userid",requireRole(["admin","member"]),removeMember);
 router.patch("/:teamId/settings", requireRole(["admin"]), updateSettings);
 router.delete("/:teamId/leave", requireRole(["admin", "member"]), leaveteam);
 
