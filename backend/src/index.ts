@@ -9,6 +9,12 @@ import cors from 'cors';
 import { requireAuth } from "./middleware/authmiddleware";
 import blockerRouter from "./routes/blockers";
 const app = express();
+const allowedOrigins = [
+  "http://localhost:3000", // web dev
+  "http://localhost:8081", // expo dev
+  process.env.WEB_URL!, // production web URL
+ 
+];
 app.use(express.json());
 app.use(cookieParser());
 app.use(
