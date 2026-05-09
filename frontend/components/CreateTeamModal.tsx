@@ -29,7 +29,7 @@ export default function CreateTeamModal({ isOpen, onClose, onCreated }: CreateTe
         timeZone,
         open_time: openTime,
         close_time: closeTime,
-        reminder_time: 60,
+        reminder_time: "10:00",
       };
       const res = await api.post("/teams", payload);
       if (res.data.success) {
