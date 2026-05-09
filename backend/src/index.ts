@@ -12,7 +12,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000", // web dev
   "http://localhost:8081", // expo dev
-  process.env.WEB_URL!, // production web URL
+  process.env.WEB_URL! || "https://dailyping.vercel.app", // production web URL
 ];
 app.use(express.json());
 app.use(cookieParser());
