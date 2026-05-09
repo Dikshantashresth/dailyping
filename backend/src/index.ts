@@ -1,7 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
-import { errorHandler } from "./middleware/errorhandler";
+import { errorHandler } from "./middleware/errorHandlers";
 import authRouter from "./routes/auth";
 import teamRouter from "./routes/team";
 import standupRouter from "./routes/standups";
