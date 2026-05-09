@@ -18,7 +18,7 @@ export const joinTeam = async (
     await client.query("BEGIN");
     const teamExist = await client.query(
       "SELECT * FROM teams WHERE invite_id = $1",
-      [id],
+      [teamId],
     );
     if (teamExist.rows.length == 0)
       throw new AppError("Team Doesnt Exist", 404);
