@@ -11,7 +11,7 @@ export const createTeamSchema = z
     timeZone: z
       .string()
       .min(1, "Timezone is required")
-      .refine((val) => Intl.supportedValuesOf("timeZone").includes(val), {
+      .refine((val) => (Intl as any).supportedValuesOf("timeZone").includes(val), {
         message: "Invalid timezone",
       }),
 
@@ -23,11 +23,12 @@ export const createTeamSchema = z
       .string()
       .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:MM)"),
 
+   
     reminder_time: z
-      .string()
+      .number("")
+      .int("Reminder time must be a whole number")
       .min(0, "Reminder time must be positive")
       .max(1440, "Reminder time cannot exceed 24 hours"),
-
   })
   .refine((data) => data.open_time < data.close_time, {
     message: "open_time must be before close_time",
