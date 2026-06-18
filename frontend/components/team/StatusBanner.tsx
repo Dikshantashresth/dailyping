@@ -1,6 +1,7 @@
 "use client";
 
 import { Flame, Clock } from "lucide-react";
+import { Alert, AlertBadge } from "@/components/ui/Alert";
 
 interface StatusBannerProps {
   type: "pending" | "closed";
@@ -10,9 +11,6 @@ interface StatusBannerProps {
   onAction?: () => void;
 }
 
-/**
- * Renders status alerts for the team feed (e.g. pending submission or closed window).
- */
 export default function StatusBanner({
   type,
   streak = 0,
@@ -22,49 +20,40 @@ export default function StatusBanner({
 }: StatusBannerProps) {
   if (type === "pending") {
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-3xl p-6 mb-10 flex flex-col md:flex-row items-center justify-between gap-6 group">
-        <div className="flex items-center gap-5 text-center md:text-left">
-          <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
-            <Flame className="w-7 h-7" />
-          </div>
+      <Alert variant="warning" icon={<Flame className="w-4 h-4" />} className="mb-4">
+        <div className="flex items-center justify-between gap-3 w-full">
           <div>
-            <h3 className="font-black text-lg text-foreground">
+            <p className="text-[13px] font-semibold text-foreground mb-0.5">
               You haven't pinged today
-            </h3>
-            <p className="text-sm text-muted-foreground font-semibold">
-              Keep your <span className="text-primary">{streak}</span> day streak alive!
+            </p>
+            <p className="text-[11px] text-muted-foreground">
+              Keep your <span className="text-primary font-semibold">{streak}</span> day streak alive
             </p>
           </div>
+          <button
+            onClick={onAction}
+            className="bg-primary text-primary-foreground h-7 px-3 rounded-md text-[11px] font-medium hover:opacity-90 transition-all active:scale-95 shrink-0"
+          >
+            Submit Now
+          </button>
         </div>
-        <button
-          onClick={onAction}
-          className="w-full md:w-auto bg-primary text-white px-10 py-4 rounded-2xl text-sm font-black hover:opacity-90 shadow-xl shadow-primary/20 transition-all active:scale-95"
-        >
-          Submit Now
-        </button>
-      </div>
+      </Alert>
     );
   }
 
   return (
-    <div className="bg-rose-500/5 border border-rose-500/10 rounded-3xl p-6 mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div className="flex items-center gap-5 text-center md:text-left">
-        <div className="w-12 h-12 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-500">
-          <Clock className="w-7 h-7" />
-        </div>
+    <Alert variant="error" icon={<Clock className="w-4 h-4" />} className="mb-4">
+      <div className="flex items-center justify-between gap-3 w-full">
         <div>
-          <h3 className="font-black text-lg text-rose-900 dark:text-rose-100">
+          <p className="text-[13px] font-semibold text-foreground mb-0.5">
             Submission Window Closed
-          </h3>
-          <p className="text-sm text-rose-700/70 dark:text-rose-300/70 font-semibold">
-            The window was from <span className="font-black">{openTime}</span> to{" "}
-            <span className="font-black">{closeTime}</span>.
+          </p>
+          <p className="text-[11px] text-muted-foreground">
+            Window was <span className="font-semibold">{openTime}</span> to <span className="font-semibold">{closeTime}</span>
           </p>
         </div>
+        <AlertBadge variant="error">Closed</AlertBadge>
       </div>
-      <div className="px-6 py-3 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-black uppercase tracking-widest border border-rose-500/20">
-        Come back tomorrow
-      </div>
-    </div>
+    </Alert>
   );
 }

@@ -51,12 +51,13 @@ export const getMembers = async (
     client = await clientPool.connect();
     const { teamId } = req.params;
     const members = await client.query(
-      `SELECT tm.role, tm.current_streak,tm.user_id, tm.longest_streak,p.avatar_url,p.name, p.email 
+      `SELECT tm.role, tm.current_streak,tm.user_id, tm.longest_streak,p.avatar_url,p.name, p.email
        FROM team_members tm 
        JOIN profiles p ON tm.user_id = p.id 
        WHERE tm.team_id = $1`,
       [teamId],
     );
+
 
     res.status(200).json({ members: members.rows, success: true });
   } catch (error) {
@@ -123,7 +124,7 @@ export const removeMember = async (
     const role = req.role;
     if (role != "admin")
       throw new AppError("Sorry cannot perform the request", 401);
-    console.log(userid,teamId);
+    console.log(userid, teamId);
     await client.query("BEGIN");
     const ismember = await client.query(
       "SELECT * FROM team_members WHERE team_id=$1 AND user_id=$2",
@@ -158,12 +159,12 @@ export const leaveteam = async (
   let client;
   try {
     client = await clientPool.connect();
-    const { teamid } = req.params;
+    const { teamId } = req.params;
     const userid = req.userId;
     await client.query("BEGIN");
     const ismember = await client.query(
       "SELECT * FROM team_members WHERE team_id=$1 AND user_id=$2",
-      [teamid, userid],
+      [teamId, userid],
     );
     console.log(ismember.rows);
     if (ismember.rows.length == 0)
@@ -171,11 +172,11 @@ export const leaveteam = async (
 
     await client.query(
       "DELETE FROM team_members WHERE user_id=$1 AND team_id=$2",
-      [userid, teamid],
+      [userid, teamId],
     );
     await client.query("DELETE FROM standups WHERE user_id=$1 AND team_id=$2", [
       userid,
-      teamid,
+      teamId,
     ]);
 
     await client.query("COMMIT");
@@ -285,5 +286,54 @@ export const createTeam = async (
     next(err);
   } finally {
     if (client) client.release();
+  }
+};
+
+export const RemoveTeam = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const client = await clientPool.connect();
+  try {
+    const role = req.role;
+    const teamId = req.params.teamId;
+    if (role == "member")
+      throw new AppError("Sorry cannot complete your request", 401);
+    await client.query("BEGIN");
+    await client.query(
+      "DELETE from blocker_flags WHERE team_id = $1 RETURNING *",
+      [teamId],
+    );
+
+    await client.query("DELETE FROM standups WHERE team_id = $1 RETURNING *", [
+      teamId,
+    ]);
+
+    const removeMembers = await client.query(
+      "DELETE FROM team_members WHERE team_id=$1 RETURNING *",
+      [teamId],
+    );
+
+    if (removeMembers.rows.length == 0)
+      throw new AppError("No members found", 401);
+    const removedTeam = await client.query(
+      "DELETE FROM teams WHERE id=$1 RETURNING *",
+      [teamId],
+    );
+    if (removedTeam.rows.length == 0) throw new AppError("Unsuccessfull", 404);
+    await client.query("COMMIT");
+    return res
+      .status(200)
+      .json({
+        message: "Removed successfully",
+        team: removedTeam.rows,
+        success: true,
+      });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    next(err);
+  } finally {
+    client.release();
   }
 };

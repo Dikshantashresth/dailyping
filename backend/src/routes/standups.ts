@@ -23,7 +23,8 @@ router.get(
   requireRole(["admin", "member"]),
   getTodaysStandup,
 );
-router.get("/history/:teamId/:date", requireRole(["admin", "member"]), history);
+router.get("/history/:teamId", requireRole(["admin", "member"]), history);
+
 router.get(
   "/user/:userId/:teamId",
   requireRole(["admin", "member"]),

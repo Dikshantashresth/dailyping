@@ -32,22 +32,22 @@ export default function ProfilePage() {
   }, [fetchUserHistory]);
 
   return (
-    <div className="p-10 max-w-4xl mx-auto">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+    <div className="px-4 py-5 max-w-3xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
           Your Profile
         </h1>
-        <p className="text-muted-foreground text-base mt-2 font-medium">
+        <p className="text-[13px] text-muted-foreground mt-2">
           Manage your personal information and settings.
         </p>
       </div>
 
       <div className="space-y-10">
-        <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
           {/* Profile Header Background */}
-          <div className="h-32 bg-primary/10 relative">
+          <div className="h-24 bg-primary/10 relative">
             <div className="absolute -bottom-12 left-10">
-              <div className="w-24 h-24 rounded-3xl bg-white shadow-md border-4 border-white flex items-center justify-center text-3xl font-bold text-primary">
+              <div className="w-16 h-16 rounded-xl bg-white shadow-md border-4 border-white flex items-center justify-center text-2xl font-bold text-primary">
                 {user.name?.charAt(0).toUpperCase() || "U"}
               </div>
             </div>
@@ -57,24 +57,24 @@ export default function ProfilePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1.5 block px-1">
+                  <label className="text-[11px] text-muted-foreground uppercase tracking-widest font-medium mb-1.5 block px-1">
                     Full Name
                   </label>
-                  <div className="flex items-center gap-3 p-3.5 bg-muted/30 rounded-2xl border border-border/50">
+                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border/50">
                     <User className="w-5 h-5 text-primary" />
-                    <span className="font-bold text-foreground">
+                    <span className="font-medium text-foreground">
                       {user.name || "Not set"}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1.5 block px-1">
+                  <label className="text-[11px] text-muted-foreground uppercase tracking-widest font-medium mb-1.5 block px-1">
                     Email Address
                   </label>
-                  <div className="flex items-center gap-3 p-3.5 bg-muted/30 rounded-2xl border border-border/50">
+                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border/50">
                     <Mail className="w-5 h-5 text-color-blue" />
-                    <span className="font-bold text-foreground">
+                    <span className="font-medium text-foreground">
                       {user.email || "Not set"}
                     </span>
                   </div>
@@ -83,24 +83,24 @@ export default function ProfilePage() {
 
               <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1.5 block px-1">
+                  <label className="text-[11px] text-muted-foreground uppercase tracking-widest font-medium mb-1.5 block px-1">
                     Account Status
                   </label>
-                  <div className="flex items-center gap-3 p-3.5 bg-muted/30 rounded-2xl border border-border/50">
+                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border/50">
                     <Shield className="w-5 h-5 text-color-green" />
-                    <span className="font-bold text-foreground">
+                    <span className="font-medium text-foreground">
                       Verified Member
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1.5 block px-1">
+                  <label className="text-[11px] text-muted-foreground uppercase tracking-widest font-medium mb-1.5 block px-1">
                     Member Since
                   </label>
-                  <div className="flex items-center gap-3 p-3.5 bg-muted/30 rounded-2xl border border-border/50">
+                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border/50">
                     <Calendar className="w-5 h-5 text-color-amber" />
-                    <span className="font-bold text-foreground">
+                    <span className="font-medium text-foreground">
                       {format(new Date(), "MMMM yyyy")}
                     </span>
                   </div>
@@ -109,12 +109,12 @@ export default function ProfilePage() {
             </div>
 
             <div className="mt-10 pt-10 border-t border-border/60">
-              <h3 className="text-lg font-bold mb-4">Account Actions</h3>
+              <h3 className="text-lg font-semibold mb-4">Account Actions</h3>
               <div className="flex flex-wrap gap-4">
-                <button className="px-6 py-2.5 bg-foreground text-background rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">
+                <button className="h-8 px-4 bg-foreground text-background rounded-lg text-[13px] font-medium hover:opacity-90 transition-opacity">
                   Edit Profile
                 </button>
-                <button className="px-6 py-2.5 bg-white border border-border rounded-xl font-bold text-sm hover:bg-muted/50 transition-colors">
+                <button className="h-8 px-4 bg-white border border-border rounded-lg text-[13px] font-medium hover:bg-muted/50 transition-colors">
                   Change Password
                 </button>
               </div>
@@ -128,7 +128,7 @@ export default function ProfilePage() {
             <div className="w-10 h-10 bg-color-purple/10 rounded-xl flex items-center justify-center text-color-purple">
               <History className="w-5 h-5" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="text-lg font-semibold text-foreground">
               Recent Activity
             </h2>
           </div>
@@ -138,11 +138,11 @@ export default function ProfilePage() {
               [1, 2].map((i) => (
                 <div
                   key={i}
-                  className="h-28 bg-muted/40 animate-pulse rounded-3xl border border-border/50"
+                  className="h-20 bg-muted/40 animate-pulse rounded-xl border border-border/50"
                 />
               ))
             ) : history.length === 0 ? (
-              <div className="py-12 bg-white rounded-3xl border border-dashed border-border text-center shadow-sm">
+              <div className="py-12 bg-white rounded-xl border border-dashed border-border text-center shadow-sm">
                 <p className="text-muted-foreground font-medium">
                   No activity recorded yet.
                 </p>
@@ -158,14 +158,14 @@ export default function ProfilePage() {
                 return (
                   <div
                     key={item.id}
-                    className="bg-white border border-border p-5 rounded-3xl shadow-sm hover:shadow-md transition-shadow flex items-start gap-4"
+                    className="bg-white border border-border p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-start gap-4"
                   >
-                    <div className="w-10 h-10 rounded-2xl bg-muted/50 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center shrink-0">
                       <Clock className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
                           {format(new Date(item.for_date), "MMM d, yyyy")}
                         </p>
                       </div>

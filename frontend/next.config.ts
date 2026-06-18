@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://dailyping-ggcr.onrender.com/:path*",
+        destination: "http://localhost:4000/:path*",
       },
     ];
   },

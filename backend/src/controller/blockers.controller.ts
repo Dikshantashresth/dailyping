@@ -13,7 +13,11 @@ export const getBlockers = async (
     const teamId = req.params.teamId;
     console.log(teamId)
     const getBlockers = await client.query(
-      "SELECT * FROM blocker_flags WHERE team_id = $1",
+      `SELECT b.*, p.name, p.avatar_url 
+       FROM blocker_flags b 
+       LEFT JOIN profiles p ON b.user_id = p.id 
+       WHERE b.team_id = $1 
+       ORDER BY b.last_seen DESC`,
       [teamId],
     );
     if (getBlockers.rows.length == 0)
@@ -43,10 +47,7 @@ export const resolveBlocker = async (
     const userid = req.userId;
     const role = req.role;
 
-    // Only admins can resolve blockers for now? Or anyone in team?
-    // Let's stick to what's logical: Admin or the person who reported it?
-    // User's code had: if (role == "member") throw new AppError("Unauthorized", 401);
-    // So only admins can resolve.
+
     if (role == "member") throw new AppError("Unauthorized. Only admins can resolve blockers.", 401);
 
     await client.query("BEGIN");

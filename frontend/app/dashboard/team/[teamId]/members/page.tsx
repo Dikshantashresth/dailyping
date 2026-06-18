@@ -59,11 +59,11 @@ export default function MembersPage() {
     }
   };
   return (
-    <div className="p-8 max-w mx-auto">
+    <div className="px-4 py-5 max-w mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Members</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-xl font-semibold tracking-tight">Members</h1>
+          <p className="text-[13px] text-muted-foreground mt-1">
             {members.length} member{members.length !== 1 ? "s" : ""} in this
             team
           </p>
@@ -71,7 +71,7 @@ export default function MembersPage() {
         {isAdmin && (
           <button
             onClick={handleCopyInvite}
-            className="inline-flex items-center gap-1.5 bg-foreground text-background px-4 py-1.5 rounded-md text-sm font-medium hover:bg-foreground/90 transition-colors"
+            className="inline-flex items-center gap-1.5 bg-foreground text-background h-8 px-4 rounded-lg text-[13px] font-medium hover:bg-foreground/90 transition-colors"
           >
             <Link2 className="w-4 h-4" /> Copy invite link
           </button>
@@ -82,12 +82,12 @@ export default function MembersPage() {
         {isLoading ? (
           <div className="p-6 space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-14 bg-muted animate-pulse rounded-lg" />
+              <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />
             ))}
           </div>
         ) : (
           <table className="w-full text-left text-sm">
-            <thead className="bg-muted text-muted-foreground text-xs uppercase tracking-wider">
+            <thead className="bg-muted text-muted-foreground text-[10px] uppercase tracking-wider">
               <tr>
                 <th className="px-5 py-3 font-medium">Member</th>
                 <th className="px-5 py-3 font-medium">Role</th>
@@ -101,14 +101,14 @@ export default function MembersPage() {
                 <tr key={idx} className="hover:bg-muted/50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs">
+                      <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center font-semibold text-[10px]">
                         {member.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                       <div>
-                        <p className="font-medium text-sm">
+                        <p className="font-medium text-[13px]">
                           {member.name || "Unknown"}
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-[11px] text-muted-foreground">
                           {member.email}
                         </p>
                       </div>
@@ -116,21 +116,21 @@ export default function MembersPage() {
                   </td>
                   <td className="px-5 py-3.5">
                     {member.role === "admin" ? (
-                      <span className="inline-flex items-center gap-1 bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-semibold">
+                      <span className="inline-flex items-center gap-1 bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-md font-semibold">
                         <ShieldAlert className="w-3 h-3" /> Admin
                       </span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-[10px] text-muted-foreground">
                         Member
                       </span>
                     )}
                   </td>
                   <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-1 text-orange-600 font-medium text-sm">
+                    <div className="flex items-center gap-1 text-orange-600 font-medium text-[13px]">
                       <Flame className="w-4 h-4" /> {member.current_streak || 0}
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-muted-foreground text-sm">
+                  <td className="px-5 py-3.5 text-muted-foreground text-[13px]">
                     {member.longest_streak || 0}
                   </td>
                   {isAdmin && (
@@ -138,7 +138,7 @@ export default function MembersPage() {
                       {member.role !== "admin" && (
                         <button
                           onClick={() => handleKickOut(member.user_id)}
-                          className="p-1.5 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                          className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
                           title="Remove member"
                         >
                           <Trash2 className="w-3.5 h-3.5" />

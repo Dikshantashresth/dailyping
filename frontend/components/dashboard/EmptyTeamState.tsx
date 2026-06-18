@@ -7,14 +7,14 @@ import { Users } from "lucide-react";
  */
 export default function EmptyTeamState() {
   return (
-    <div className="text-center py-24 bg-card rounded-3xl border border-dashed border-border shadow-sm">
-      <div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-6 text-muted-foreground">
-        <Users className="w-10 h-10" />
+    <div className="text-center py-16 bg-card rounded-xl border border-dashed border-border shadow-sm">
+      <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto mb-6 text-muted-foreground">
+        <Users className="w-6 h-6" />
       </div>
-      <h2 className="text-2xl font-bold mb-2 text-foreground">
+      <h2 className="text-lg font-semibold mb-2 text-foreground">
         No teams yet
       </h2>
-      <p className="text-muted-foreground max-w-sm mx-auto font-medium">
+      <p className="text-[13px] text-muted-foreground max-w-sm mx-auto">
         Start by creating a new team or joining an existing one from the
         sidebar.
       </p>

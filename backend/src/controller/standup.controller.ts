@@ -22,7 +22,7 @@ export const submitStandup = async (
     if (insertStandup.rows.length == 0)
       throw new AppError("Failed to submit", 500);
     if (has_blocker && blockers) {
-      detectAndFlagBlocker(team_id, blockers, for_date);
+      detectAndFlagBlocker(team_id, userId!, blockers, for_date);
     }
     await client.query("COMMIT");
     return res.status(200).json({ message: "Pinged", success: true });
@@ -104,39 +104,104 @@ export const history = async (
     const teamId = req.params.teamId as string;
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
-    const date = req.params.date as string | undefined;
     const offset = (page - 1) * limit;
+
+    // Filters from query params
+    const search = req.query.search as string | undefined;
+    const userId = req.query.userId as string | undefined;
+    const hasBlocker = req.query.hasBlocker === "true";
+    const startDate = req.query.startDate as string | undefined;
+    const endDate = req.query.endDate as string | undefined;
 
     let query = `
       SELECT s.*, p.name as user_name, p.avatar_url 
       FROM standups s
       JOIN profiles p ON s.user_id = p.id
       WHERE s.team_id=$1`;
-
+    
     const params: Array<string | number> = [teamId];
+    let paramCount = 1;
 
-    if (date) {
-      query += " AND for_date = $2";
-      params.push(date);
-      query += " LIMIT $3 OFFSET $4";
-    } else {
-      query += " LIMIT $2 OFFSET $3";
+    if (search) {
+      paramCount++;
+      query += ` AND (s.did ILIKE $${paramCount} OR s.blockers ILIKE $${paramCount})`;
+      params.push(`%${search}%`);
     }
 
-    params.push(limit, offset);
+    if (userId) {
+      paramCount++;
+      query += ` AND s.user_id = $${paramCount}`;
+      params.push(userId);
+    }
 
-    await client.query("BEGIN");
-    const historyResult = await client.query(query, params);
-    await client.query("COMMIT");
+    if (hasBlocker) {
+      query += ` AND s.has_blocker = true`;
+    }
 
-    if (historyResult.rows.length == 0)
-      return next(new AppError("No standups present", 404));
+    if (startDate) {
+      paramCount++;
+      query += ` AND s.for_date >= $${paramCount}`;
+      params.push(startDate);
+    }
 
-    return res
-      .status(200)
-      .json({ standups: historyResult.rows, success: true });
+    if (endDate) {
+      paramCount++;
+      query += ` AND s.for_date <= $${paramCount}`;
+      params.push(endDate);
+    }
+
+    // Sort by date descending
+    query += ` ORDER BY s.for_date DESC`;
+
+    // Add pagination
+    paramCount++;
+    query += ` LIMIT $${paramCount}`;
+    params.push(limit);
+
+    paramCount++;
+    query += ` OFFSET $${paramCount}`;
+    params.push(offset);
+
+    // Get total count for pagination
+    let countQuery = `SELECT COUNT(*) FROM standups s WHERE team_id = $1`;
+    const countParams: Array<string | number> = [teamId];
+    let countParamCount = 1;
+
+    if (search) {
+      countParamCount++;
+      countQuery += ` AND (s.did ILIKE $${countParamCount} OR s.blockers ILIKE $${countParamCount})`;
+      countParams.push(`%${search}%`);
+    }
+    if (userId) {
+      countParamCount++;
+      countQuery += ` AND s.user_id = $${countParamCount}`;
+      countParams.push(userId);
+    }
+    if (hasBlocker) countQuery += ` AND s.has_blocker = true`;
+    if (startDate) {
+      countParamCount++;
+      countQuery += ` AND s.for_date >= $${countParamCount}`;
+      countParams.push(startDate);
+    }
+    if (endDate) {
+      countParamCount++;
+      countQuery += ` AND s.for_date <= $${countParamCount}`;
+      countParams.push(endDate);
+    }
+
+    const [historyResult, totalResult] = await Promise.all([
+      client.query(query, params),
+      client.query(countQuery, countParams)
+    ]);
+
+    return res.status(200).json({ 
+      standups: historyResult.rows, 
+      total: parseInt(totalResult.rows[0].count),
+      page,
+      limit,
+      success: true 
+    });
   } catch (error) {
-    if (client) await client.query("ROLLBACK");
     next(error);
   } finally {
     if (client) client.release();

@@ -12,91 +12,221 @@
   --color-accent: var(--accent);
   --color-sidebar: var(--sidebar);
   --color-sidebar-hover: var(--sidebar-hover);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains);
+  --font-display: var(--font-outfit);
 }
 
 :root {
-  --background: #fdfdfb;
-  --foreground: #2d3436;
-  --primary: #f97316; /* Orange */
-  --primary-foreground: #ffffff;
-  --muted: #f0f2f5;
-  --muted-foreground: #636e72;
-  --border: #e2e8f0;
+  /* Core Palette */
+  --background: #fafaf9;
+  --foreground: #1c1917;
+  --surface: #f5f5f4;
   --card: #ffffff;
-  --accent: #fff7ed;
-  
-  /* Sidebar Colors */
-  --sidebar: #f8fafd;
-  --sidebar-hover: #edf2f7;
-  
+  --border: #e7e5e4;
+  --muted: #f5f5f4;
+  --muted-foreground: #78716c;
+
+  /* Brand */
+  --primary: #d97706;
+  --primary-foreground: #ffffff;
+  --accent: #fef3c7;
+
+  /* Semantic */
+  --danger: #e11d48;
+  --success: #059669;
+  --warning: #d97706;
+
+  /* Sidebar */
+  --sidebar: #fafaf9;
+  --sidebar-hover: #f5f5f4;
+
   /* Category Colors */
-  --color-blue: #3b82f6;
-  --color-green: #22c55e;
-  --color-purple: #a855f7;
-  --color-rose: #f43f5e;
-  --color-amber: #f59e0b;
+  --color-blue: #2563eb;
+  --color-green: #059669;
+  --color-purple: #7c3aed;
+  --color-rose: #e11d48;
+  --color-amber: #d97706;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --shadow-ring: 0 0 0 3px rgba(217,119,6,0.15);
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Spacing */
+  --space-px: 1px;
+  --space-0: 0px;
+  --space-0\.5: 2px;
+  --space-1: 4px;
+  --space-1\.5: 6px;
+  --space-2: 8px;
+  --space-2\.5: 10px;
+  --space-3: 12px;
+  --space-3\.5: 14px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+
+  /* Typography */
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.25rem;
+  --text-3xl: 1.5rem;
+  --text-4xl: 1.875rem;
+
+  /* Animation */
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+  --duration-slow: 250ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --primary: #f97316;
-  --primary-foreground: #ffffff;
+  --background: #0a0a0c;
+  --foreground: #fafaf9;
+  --surface: #141416;
+  --card: #1c1c1f;
+  --border: #27272a;
   --muted: #18181b;
   --muted-foreground: #a1a1aa;
-  --border: #27272a;
-  --card: #121215;
-  --accent: #2d1a0d;
-  
-  /* Sidebar Colors */
+
+  --primary: #f59e0b;
+  --primary-foreground: #0a0a0c;
+  --accent: #422006;
+
+  --danger: #fb7185;
+  --success: #34d399;
+  --warning: #fbbf24;
+
   --sidebar: #0c0c0e;
-  --sidebar-hover: #1c1c1f;
-  
-  /* Category Colors (Slightly adjusted for dark) */
+  --sidebar-hover: #18181b;
+
   --color-blue: #60a5fa;
-  --color-green: #4ade80;
-  --color-purple: #c084fc;
+  --color-green: #34d399;
+  --color-purple: #a78bfa;
   --color-rose: #fb7185;
   --color-amber: #fbbf24;
-}
 
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.35), 0 2px 4px -2px rgba(0,0,0,0.25);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.2);
+  --shadow-ring: 0 0 0 3px rgba(245,158,11,0.2);
+}
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: var(--text-base);
+  line-height: 1.5;
 }
 
-/* Notion-style scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
+  background: var(--border);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a3a3a3;
+  background: var(--muted-foreground);
 }
 
-@keyframes progress {
-  0% { width: 0%; }
-  50% { width: 70%; }
-  100% { width: 100%; }
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
-.animate-progress {
-  animation: progress 2s ease-in-out infinite;
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 
+/* Transitions */
+.transition-colors-fast {
+  transition: color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-slow) var(--ease-out) both;
+}
+
+.animate-slide-in {
+  animation: slide-in-right var(--duration-slow) var(--ease-out) both;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s var(--ease-in-out) infinite;
+}
+
+/* Stagger children */
+.stagger-children > * {
+  animation: fade-in var(--duration-slow) var(--ease-out) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 350ms; }

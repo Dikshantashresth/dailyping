@@ -8,6 +8,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import { Settings, Globe, Clock, Shield, Link2, Save } from "lucide-react";
+import { Alert } from "@/components/ui/Alert";
 
 export default function SettingsPage() {
   const params = useParams();
@@ -29,7 +30,6 @@ export default function SettingsPage() {
   );
   const [isLoading, setIsLoading] = useState(false);
 
-  // Sync state if currentTeam loads after initial render
   useEffect(() => {
     if (currentTeam) {
       setTeamName(currentTeam.name);
@@ -44,18 +44,14 @@ export default function SettingsPage() {
 
   if (!isAdmin) {
     return (
-      <div className="p-10 max-w-4xl mx-auto">
-        <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-border shadow-sm">
-          <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8" />
-          </div>
-          <h2 className="text-xl font-bold mb-2 text-foreground">
-            Access Denied
-          </h2>
-          <p className="text-muted-foreground font-medium">
-            Only team admins can access these settings.
-          </p>
-        </div>
+      <div className="px-4 py-5 max-w-3xl mx-auto">
+        <Alert
+          variant="error"
+          title="Access Denied"
+          icon={<Shield className="w-4 h-4" />}
+        >
+          Only team admins can access these settings.
+        </Alert>
       </div>
     );
   }
@@ -82,9 +78,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-10 max-w-4xl mx-auto">
+    <div className="px-4 py-5 max-w mx-auto">
       <div className="mb-10">
-        <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">
+        <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
           <Link
             href={`/dashboard/team/${teamId}`}
             className="hover:text-primary transition-colors"
@@ -94,23 +90,24 @@ export default function SettingsPage() {
           <span>/</span>
           <span className="text-foreground">Settings</span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground flex items-center gap-2">
+          <Settings className="w-5 h-5" />
           Team Settings
         </h1>
-        <p className="text-muted-foreground text-base mt-2 font-medium">
+        <p className="text-[13px] text-muted-foreground mt-2">
           Configure your team's rules and preferences.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <form
             onSubmit={handleSave}
-            className="rounded-3xl border border-border shadow-sm overflow-hidden"
+            className="rounded-xl border border-border shadow-sm overflow-hidden"
           >
-            <div className="p-8 space-y-6">
+            <div className="p-6 space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold px-1">
+                <label className="text-[11px] font-medium text-muted-foreground px-1">
                   Team Name
                 </label>
                 <div className="relative">
@@ -119,14 +116,14 @@ export default function SettingsPage() {
                     type="text"
                     value={teamName}
                     onChange={(e) => setTeamName(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-muted/30 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-semibold"
+                    className="w-full pl-11 pr-4 h-9 px-3 text-[13px] bg-muted/30 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                     placeholder="Engineering Team"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold px-1">
+                <label className="text-[11px] font-medium text-muted-foreground px-1">
                   Timezone
                 </label>
                 <div className="relative">
@@ -135,14 +132,14 @@ export default function SettingsPage() {
                     type="text"
                     value={timeZone}
                     onChange={(e) => setTimeZone(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-muted/30 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-color-blue/20 focus:border-color-blue transition-all font-semibold"
+                    className="w-full pl-11 pr-4 h-9 px-3 text-[13px] bg-muted/30 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-color-blue/20 focus:border-color-blue transition-all"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold px-1">
+                  <label className="text-[11px] font-medium text-muted-foreground px-1">
                     Submissions Open
                   </label>
                   <div className="relative">
@@ -151,12 +148,12 @@ export default function SettingsPage() {
                       type="time"
                       value={openTime}
                       onChange={(e) => setOpenTime(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-muted/30 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-color-green/20 focus:border-color-green transition-all font-semibold"
+                      className="w-full pl-11 pr-4 h-9 px-3 text-[13px] bg-muted/30 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-color-green/20 focus:border-color-green transition-all"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold px-1">
+                  <label className="text-[11px] font-medium text-muted-foreground px-1">
                     Submissions Close
                   </label>
                   <div className="relative">
@@ -165,18 +162,18 @@ export default function SettingsPage() {
                       type="time"
                       value={closeTime}
                       onChange={(e) => setCloseTime(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-muted/30 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-color-rose/20 focus:border-color-rose transition-all font-semibold"
+                      className="w-full pl-11 pr-4 h-9 px-3 text-[13px] bg-muted/30 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-color-rose/20 focus:border-color-rose transition-all"
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-8 bg-muted/20 border-t border-border flex justify-end">
+            <div className="p-6 bg-muted/20 border-t border-border flex justify-end">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex items-center gap-2 bg-foreground text-background px-8 py-3 rounded-xl text-sm font-bold hover:opacity-90 shadow-lg shadow-gray-200 transition-all disabled:opacity-50 active:scale-95"
+                className="flex items-center gap-2 bg-foreground text-background h-8 px-4 rounded-lg text-[13px] font-medium hover:opacity-90 cursor-pointer transition-all disabled:opacity-50 active:scale-95"
               >
                 <Save className="w-4 h-4" />
                 {isLoading ? "Saving..." : "Save Changes"}
@@ -186,17 +183,17 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-3xl border border-border shadow-sm p-6">
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <Link2 className="w-5 h-5 text-primary" />
+          <div className="rounded-xl border border-border shadow-sm p-5">
+            <h3 className="text-[13px] font-semibold mb-4 flex items-center gap-2">
+              <Link2 className="w-4 h-4 text-primary" />
               Invite Link
             </h3>
-            <p className="text-sm text-muted-foreground font-medium mb-4">
+            <p className="text-[12px] text-muted-foreground mb-4">
               Share this unique code with your team members to have them join
               this space.
             </p>
             <div className="space-y-3">
-              <div className="px-4 py-3 bg-muted/50 rounded-xl border border-border/50 font-mono text-sm font-bold text-foreground break-all">
+              <div className="p-3 bg-muted/50 rounded-lg border border-border/50 font-mono text-[12px] text-foreground break-all">
                 {currentTeam?.invite_id}
               </div>
               <button
@@ -204,18 +201,19 @@ export default function SettingsPage() {
                   navigator.clipboard.writeText(currentTeam?.invite_id || "");
                   toast.success("Invite link copied!");
                 }}
-                className="w-full py-3  border border-border rounded-xl text-sm font-bold hover:bg-muted/50 transition-colors"
+                className="w-full h-8 border border-border rounded-lg text-[12px] font-medium hover:bg-muted/50 transition-colors"
               >
                 Copy Invite ID
               </button>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl border border-rose-100 p-6">
-            <h3 className="text-lg font-bold text-rose-700 mb-2">
-              Danger Zone
-            </h3>
-            <p className="text-sm text-rose-600/80 font-medium mb-4">
+          <Alert
+            variant="error"
+            title="Danger Zone"
+            icon={<Shield className="w-4 h-4" />}
+          >
+            <p className="mb-3">
               Leaving the team will remove your access and clear your standup
               history for this team.
             </p>
@@ -235,11 +233,11 @@ export default function SettingsPage() {
                   }
                 }
               }}
-              className="w-full py-3 bg-rose-500 text-white rounded-xl text-sm font-bold hover:bg-rose-600 shadow-lg shadow-rose-200 transition-all"
+              className="h-8 px-4 bg-danger text-white rounded-lg text-[12px] font-medium hover:opacity-90 transition-all cursor-pointer"
             >
               Leave Team
             </button>
-          </div>
+          </Alert>
         </div>
       </div>
     </div>

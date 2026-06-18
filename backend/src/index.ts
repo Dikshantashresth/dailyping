@@ -8,6 +8,7 @@ import standupRouter from "./routes/standups";
 import cors from "cors";
 import { requireAuth } from "./middleware/authmiddleware";
 import blockerRouter from "./routes/blockers";
+import discussionRouter from "./routes/discussion";
 const app = express();
 const allowedOrigins = [
   "http://localhost:3000", // web dev
@@ -39,6 +40,7 @@ app.use("/auth", authRouter);
 app.use("/teams", requireAuth, teamRouter);
 app.use("/standups", requireAuth, standupRouter);
 app.use("/blockers", requireAuth, blockerRouter);
+app.use("/discussions",requireAuth, discussionRouter);
 
 app.use(errorHandler);
 
